@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>ECharts--足球场样例</title>
+</head>
+<body>
+    <!-- 为ECharts准备一个具备大小（宽高）的Dom -->
+    <div id="main" style="height: 400px; width: 45%; min-width: 600px; float: left;" ></div>
+    <!-- ECharts单文件引入 -->
+    <script src="../static/echarts/src/echarts-oss.js" charset="UTF-8"></script>
+    <script src="../static/echarts/jquery.js"></script>
+    <script src="../static/echarts/esl.js"></script>
+    <script type="text/javascript">
+        test();
+        function test(){
+        	 require.config({
+                 paths: {
+                     echarts: '../static/echarts/src'
+                 }
+             });
+             require(
+             [
+                 'echarts',
+                 'echarts/chart/map'
+             ],
+                function (ec) {
+                     // 基于准备好的dom，初始化echarts图表
+                    var myChart = ec.init(document.getElementById('main')); 
+                    // 自定义扩展图表类型：mapType = body
+                    require('echarts/util/mapData/params').params.baiduBuilding = {
+                        getGeoJson: function (callback) {
+                            $.ajax({
+                                type:"get",
+                                url: "../static/echarts/svg/football.svg",
+                                dataType: 'xml',
+                                success: function(xml) {
+                                    callback(xml)
+                                }
+                            });
+                        }
+                    }
+                    var option = {
+                        /* backgroundColor: '#eee',*/
+                        
+                        tooltip: {
+                            trigger: 'item',
+                            formatter: function (v) {
+                                return v[1];
+                            }
+                        },
+                        color: ['rgba(218, 70, 214, 1)', 'rgba(100, 149, 237, 1)'],
+                        
+                        series: [
+                           
+                            {
+                                name: '大型商业机密档案柜',
+                                type: 'map',
+                                mapType: 'baiduBuilding',
+                                roam: true,
+                                itemStyle: {
+                                    normal: { label: { show: true } },
+                                    emphasis: { label: { show: true } }
+                                },
+                                data: [],
+                                geoCoord: {
+                                    
+                                    'CST616_6#': [465, 290]
+                                },
+                                markPoint: {
+                                    symbolSize: 3,
+                                    data: [
+                                         
+                                        { name: 'CST616_6#' }
+                                    ]
+                                },
+                                markLine: {
+                                     
+    								effect: {
+                                        show: true,
+                                        period: 40,
+                                        color: '#fff',
+                                        shadowBlur: 2,
+    									scaleSize :1
+                                    },
+                                    smooth:true,
+    								symbol: ['none', 'circle'],  
+    								symbolSize : 1,
+                                    itemStyle: {
+                                        normal: {
+    										borderWidth:2
+                                        }
+                                    },
+                                    data: [
+                                        [
+                                            { name: 'CST616_6#' },
+                                            { name: '大型商业机密档案柜' }
+                                        ]
+                                        
+                                    ]
+                                }
+                            },
+                            {
+                                type: 'map',
+                                mapType: 'baiduBuilding',
+                                data: [],
+                                geoCoord: {
+                                    '大型商业机密档案柜': [80, 140]
+                                },
+                                markPoint: {
+                                    symbol: 'emptyCircle',
+                                    symbolSize: 15,
+                                    effect: {
+                                        show: true,
+                                        color: 'rgba(218, 70, 214, 1)'
+                                    },
+                                    data: [
+                                        { name: '大型商业机密档案柜' }
+                                    ]
+                                }
+                            }
+                        ]
+                    };
+     
+                    // 为echarts对象加载数据 
+                    myChart.setOption(option);
+             }
+
+             );  
+
+
+         };            
+        
+    </script>
+   
+</body>
